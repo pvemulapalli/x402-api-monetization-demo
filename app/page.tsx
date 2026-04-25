@@ -54,9 +54,9 @@ export default function Home() {
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <h2 className="text-xl font-semibold">Test commands</h2>
           <pre className="mt-4 overflow-x-auto rounded bg-slate-800 p-4 text-sm">
-{`curl http://localhost:3000/api/paid/fx
+{`curl -i http://localhost:3000/api/paid/fx
 
-curl http://localhost:3000/api/paid/weather`}
+curl -i http://localhost:3000/api/paid/weather`}
           </pre>
         </div>
       </section>
