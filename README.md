@@ -1,50 +1,140 @@
 # x402 API Monetization Demo
 
-This project demonstrates how existing Web2 APIs can be wrapped as machine-payable API products using HTTP 402 Payment Required and USDC testnet payments.
+APIs today are still gated by API keys, accounts, and subscriptions.
 
-## What this project does
+This project demonstrates a different model:
 
-It exposes two x402-protected API endpoints:
+request → HTTP 402 Payment Required → USDC payment → access
 
-1. `/api/paid/fx`
-   - Wraps Frankfurter FX rates
-   - Use case: cross-border commerce, FX comparison, settlement demos
+It implements real x402 payment enforcement using Base Sepolia and exposes live endpoints that require payment before returning data.
 
-2. `/api/paid/weather`
-   - Wraps Open-Meteo weather data
-   - Use case: generic Web2 data monetization
+---
+
+## What is implemented
+
+- HTTP 402 Payment Required enforcement at the API layer
+- Machine-readable payment instructions returned in response headers
+- USDC-based pricing on Base Sepolia
+- Two monetized API endpoints:
+
+### 1. `/api/paid/fx`
+
+- Wraps Frankfurter FX rates
+- Returns USD exchange rates for EUR, GBP, and INR
+- Use case: cross-border commerce, FX comparison, settlement analysis
+
+### 2. `/api/paid/weather`
+
+- Wraps Open-Meteo weather data
+- Returns real-time weather for Frisco, TX
+- Use case: showing that any Web2 API can become pay-per-call
+
+Note: This project enforces payment requirements but does not yet complete onchain transaction verification.
+
+---
 
 ## Why this matters
 
-Traditional API access usually requires API keys, account setup, pricing pages, subscriptions, and manual billing.
+Most APIs today rely on identity-based access:
 
-x402 changes the model:
+- API keys
+- user accounts
+- billing systems
 
-request → 402 Payment Required → payment → access
+Agent-driven systems require a different model:
 
-This creates a path for AI agents and software clients to discover, pay for, and consume APIs programmatically.
+- programmatic discovery
+- per-request pricing
+- machine-native payment flows
+
+x402 enables APIs to become directly monetizable resources that software and AI agents can pay for dynamically.
+
+This shifts API access from identity to payment.
+
+---
+
+## Example flow
+
+1. Client calls API endpoint
+2. API returns `HTTP 402 Payment Required`
+3. Response includes:
+   - price in USDC
+   - network: Base Sepolia
+   - recipient wallet
+4. Client completes payment
+5. Client retries request
+6. API returns data
+
+---
 
 ## Tech stack
 
 - Next.js
 - TypeScript
-- x402
+- x402 protocol
 - Base Sepolia
 - USDC testnet payments
+
+---
 
 ## Local setup
 
 ```bash
 npm install
-npm run dev 
+npm run dev
 ```
 
-Create .env.local:
-`NEXT_PUBLIC_APP_NAME="x402 API Monetization Demo"`
-`X402_PAY_TO="your_wallet_address"`
+Create `.env.local`:
 
-Test
-`curl -i http://localhost:3000/api/paid/fx`
-`curl -i http://localhost:3000/api/paid/weather`
+```env
+NEXT_PUBLIC_APP_NAME="x402 API Monetization Demo"
+X402_PAY_TO="your_wallet_address"
+```
 
-Both endpoints should return 402 Payment Required until paid through an x402-compatible client.
+---
+
+## Testing
+
+Run:
+
+```bash
+curl -i http://localhost:3000/api/paid/fx
+curl -i http://localhost:3000/api/paid/weather
+```
+
+Expected result:
+
+- `HTTP 402 Payment Required`
+- Payment instructions returned in headers
+- No data returned until payment conditions are met
+
+---
+
+## Live deployment
+
+The project is deployed on Vercel.
+
+Live endpoints enforce real HTTP 402 responses and can be tested directly using curl or any HTTP client.
+
+---
+
+## Next steps
+
+- Add onchain USDC transaction verification
+- Enable client-side payment execution and retry flow
+- Introduce agent-based API discovery and payment
+- Compare traditional API key access vs x402 payment access
+
+---
+
+## Key takeaway
+
+APIs are evolving from:
+
+API key → authentication → billing system
+
+to:
+
+request → payment → access
+
+This is a foundational shift required for agentic commerce and machine-to-machine transactions.
