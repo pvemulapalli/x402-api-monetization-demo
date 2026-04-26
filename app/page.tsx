@@ -1,64 +1,122 @@
-const endpoints = [
-  {
-    name: "FX Rates API",
-    path: "/api/paid/fx",
-    price: "$0.001",
-    description:
-      "USD to EUR, GBP, and INR rates for cross-border commerce demos."
-  },
-  {
-    name: "Weather API",
-    path: "/api/paid/weather",
-    price: "$0.001",
-    description:
-      "Current weather data for Frisco, TX, used to show any Web2 API can become pay-per-call."
-  }
-];
+import { headers } from "next/headers";
+import EndpointCard from "@/components/EndpointCard";
 
-export default function Home() {
+export const metadata = {
+  title: "x402 API Monetization Demo | Praveen Vemulapalli",
+  description:
+    "Demonstration of HTTP 402 Payment Required with USDC for pay-per-call APIs using x402 on Base Sepolia."
+};
+
+export default async function Home() {
+  const headersList = await headers();
+  const host = headersList.get("host");
+
+  const protocol = host?.includes("localhost") ? "http" : "https";
+  const baseUrl = `${protocol}://${host}`;
+
+  const endpoints = [
+    {
+      name: "FX Rates API",
+      path: "/api/paid/fx",
+      price: "$0.001",
+      description:
+        "USD to EUR, GBP, and INR rates. Useful for cross-border pricing, settlement comparisons, and commerce use cases."
+    },
+    {
+      name: "Weather API",
+      path: "/api/paid/weather",
+      price: "$0.001",
+      description:
+        "Real-time weather data for Frisco, TX. Demonstrates how any Web2 API can become pay-per-call."
+    }
+  ];
+
   return (
     <main className="min-h-screen bg-slate-950 text-white p-8">
-      <section className="mx-auto max-w-4xl space-y-8">
+      <section className="mx-auto max-w-5xl space-y-10">
+
+        {/* HEADER */}
         <div>
           <p className="text-sm uppercase tracking-wide text-slate-400">
             x402 API Monetization Demo
           </p>
           <h1 className="mt-3 text-4xl font-bold">
-            Turning free Web2 APIs into machine-payable endpoints
+            Turning APIs into machine-payable products
           </h1>
-          <p className="mt-4 text-slate-300">
-            This project demonstrates how APIs can use HTTP 402 Payment Required
-            and USDC testnet payments to move from API-key access to pay-per-call
-            access.
+          <p className="mt-4 text-slate-300 max-w-3xl">
+            Traditional APIs require API keys, accounts, and billing systems.
+            This demo shows a different model where APIs enforce payment
+            directly using HTTP 402 and USDC.
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {endpoints.map((endpoint) => (
-            <div
-              key={endpoint.path}
-              className="rounded-2xl border border-slate-800 bg-slate-900 p-6"
-            >
-              <h2 className="text-xl font-semibold">{endpoint.name}</h2>
-              <p className="mt-2 text-slate-300">{endpoint.description}</p>
-              <p className="mt-4 text-sm text-slate-400">
-                Price: {endpoint.price} on Base Sepolia
-              </p>
-              <code className="mt-3 block rounded bg-slate-800 p-3 text-sm">
-                GET {endpoint.path}
-              </code>
-            </div>
-          ))}
-        </div>
-
+        {/* FLOW */}
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">Test commands</h2>
-          <pre className="mt-4 overflow-x-auto rounded bg-slate-800 p-4 text-sm">
-{`curl -i http://localhost:3000/api/paid/fx
-
-curl -i http://localhost:3000/api/paid/weather`}
-          </pre>
+          <h2 className="text-xl font-semibold">How it works</h2>
+          <div className="mt-4 space-y-2 text-slate-300">
+            <p>1. Client calls API endpoint</p>
+            <p>
+              2. API returns{" "}
+              <span className="text-white font-semibold">
+                HTTP 402 Payment Required
+              </span>
+            </p>
+            <p>3. Response includes price, network, and wallet address</p>
+            <p>4. Client completes payment</p>
+            <p>5. Client retries request</p>
+            <p>6. API returns data</p>
+          </div>
         </div>
+
+        {/* ENDPOINTS */}
+        <div>
+          <h2 className="text-2xl font-semibold">Available APIs</h2>
+
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            {endpoints.map((endpoint) => (
+              <EndpointCard
+                key={endpoint.path}
+                endpoint={endpoint}
+                baseUrl={baseUrl}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* WHY IT MATTERS */}
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+          <h2 className="text-xl font-semibold">Why this matters</h2>
+          <p className="mt-3 text-slate-300">
+            This shifts API access from identity-based models (API keys and accounts)
+            to payment-based access. Instead of signing up and managing credentials,
+            clients can pay per request and immediately access resources.
+          </p>
+
+          <p className="mt-4 text-slate-300">
+            This model is especially important for agentic systems, where software
+            and AI agents need to discover, pay for, and consume APIs dynamically.
+          </p>
+        </div>
+
+        {/* FOOTER */}
+        <div className="text-sm text-slate-500 space-y-2">
+          <p>
+            Built with Next.js, x402, and USDC testnet on Base Sepolia.
+          </p>
+
+          <p>
+            Created by{" "}
+            <a
+              href="https://www.linkedin.com/in/praveenvemulapalli/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline"
+            >
+              Praveen Vemulapalli
+            </a>
+          </p>
+        </div>
+
       </section>
     </main>
   );

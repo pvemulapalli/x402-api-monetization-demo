@@ -55,15 +55,15 @@ This shifts API access from identity to payment.
 
 ## Example flow
 
-1. Client calls API endpoint
-2. API returns `HTTP 402 Payment Required`
+1. Client calls API endpoint  
+2. API returns `HTTP 402 Payment Required`  
 3. Response includes:
-   - price in USDC
-   - network: Base Sepolia
-   - recipient wallet
-4. Client completes payment
-5. Client retries request
-6. API returns data
+   - price in USDC  
+   - network: Base Sepolia  
+   - recipient wallet  
+4. Client completes payment  
+5. Client retries request  
+6. API returns data  
 
 ---
 
@@ -72,8 +72,8 @@ This shifts API access from identity to payment.
 - Next.js
 - TypeScript
 - x402 protocol
-- Base Sepolia
-- USDC testnet payments
+- Base Sepolia (EVM testnet)
+- USDC (testnet)
 
 ---
 
@@ -90,6 +90,47 @@ Create `.env.local`:
 NEXT_PUBLIC_APP_NAME="x402 API Monetization Demo"
 X402_PAY_TO="your_wallet_address"
 ```
+
+---
+
+## Getting a testnet wallet (Base Sepolia / Ethereum Sepolia)
+
+To interact with this project or extend it to complete payments, you will need an EVM-compatible wallet and a testnet address.
+
+### Option 1: Phantom (recommended if you already use it)
+
+1. Install the Phantom wallet browser extension  
+2. Create or import a wallet  
+3. Enable Ethereum / EVM networks in settings  
+4. Switch network to:
+   - Base Sepolia (preferred), or  
+   - Ethereum Sepolia  
+
+---
+
+### Option 2: MetaMask
+
+1. Install MetaMask extension  
+2. Create a wallet  
+3. Add Base Sepolia network manually:
+
+Network details:
+
+- Network Name: Base Sepolia  
+- RPC URL: https://sepolia.base.org  
+- Chain ID: 84532  
+- Currency Symbol: ETH  
+
+---
+
+### Get testnet funds
+
+You will need testnet ETH to simulate transactions:
+
+- Use a Sepolia faucet (for ETH)
+- Bridge or mint testnet USDC depending on your setup
+
+Note: This project currently enforces payment but does not yet verify onchain transactions.
 
 ---
 
@@ -120,10 +161,10 @@ Live endpoints enforce real HTTP 402 responses and can be tested directly using 
 
 ## Next steps
 
-- Add onchain USDC transaction verification
-- Enable client-side payment execution and retry flow
-- Introduce agent-based API discovery and payment
-- Compare traditional API key access vs x402 payment access
+- Add onchain USDC transaction verification  
+- Enable client-side payment execution and retry flow  
+- Introduce agent-based API discovery and payment  
+- Compare traditional API key access vs x402 payment access  
 
 ---
 
@@ -131,10 +172,10 @@ Live endpoints enforce real HTTP 402 responses and can be tested directly using 
 
 APIs are evolving from:
 
-API key → authentication → billing system
+API key → authentication → billing system  
 
 to:
 
-request → payment → access
+request → payment → access  
 
 This is a foundational shift required for agentic commerce and machine-to-machine transactions.
